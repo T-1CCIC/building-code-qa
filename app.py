@@ -2,7 +2,31 @@ import streamlit as st
 import os
 from qa_engine import answer_question, vectorstore, reranker  # 导入必要的函数和资源
 from dotenv import load_dotenv
+import streamlit as st
 
+# 密码验证
+def check_password():
+    """返回 `True` 如果密码正确。"""
+    def password_entered():
+        if st.session_state["password"] == st.secrets["APP_PASSWORD"]:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # 不存储密码
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        st.text_input("请输入访问密码", type="password", on_change=password_entered, key="password")
+        return False
+    elif not st.session_state["password_correct"]:
+        st.text_input("请输入访问密码", type="password", on_change=password_entered, key="password")
+        st.error("密码错误")
+        return False
+    else:
+        return True
+
+if not check_password():
+    st.stop()  # 不继续加载主应用
+    
 # 加载 .env 文件
 load_dotenv("touch.env")  # 或 ".env"
 
