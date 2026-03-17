@@ -1,7 +1,5 @@
 # 🏗️ 建筑规范智能问答助手
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-name.streamlit.app)  <!-- 替换为你的部署链接 -->
-
 一个基于 **RAG（检索增强生成）** 的建筑规范智能问答系统。用户可以用自然语言提问，系统从多本建筑设计规范（如《住宅设计规范》《建筑设计防火规范》）中检索相关条款，并由大模型生成准确、可溯源的答案。项目结合了建筑行业背景与前沿 AI 技术，旨在帮助设计师、工程师快速查阅规范。
 
 ## ✨ 核心特性
