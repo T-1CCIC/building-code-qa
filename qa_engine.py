@@ -56,7 +56,7 @@ def generate_answer(query, retrieved_docs,history = None):
                 history_text += f"助手：{content}\n"
         history_text += "\n"
 
-    prompt = f"""请根据以下文档内容回答用户的问题。如果文档中没有相关信息，请如实说明。
+    prompt = f"""{history_text}请根据以下文档内容回答用户的问题。如果文档中没有相关信息，请如实说明。
 
 文档内容：
 {context}
@@ -118,7 +118,7 @@ def answer_question(query, use_multi_source=False, lambda_mult=0.8,history = Non
     else:
         top_docs = [doc for doc, _ in adjusted[:3]]
 
-    answer = generate_answer(query, top_docs)
+    answer = generate_answer(query, top_docs,history)
     return answer, top_docs
 
 
