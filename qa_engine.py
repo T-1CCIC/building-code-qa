@@ -74,7 +74,7 @@ def generate_answer(query, retrieved_docs,history = None):
         return f"API调用失败:{e}"
 
 # 核心问答函数
-def answer_question(query, use_multi_source=False, lambda_mult=0.8):
+def answer_question(query, use_multi_source=False, lambda_mult=0.8,history = None):
     # ---------- 查询扩展 ----------
     expanded_query = expand_query(query)  # 调用扩展函数
     queries = [query, expanded_query]     # 原问题 + 扩展问题
