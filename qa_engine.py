@@ -38,8 +38,24 @@ def expand_query(query):
         return query
 
 #     
-def generate_answer(query, retrieved_docs):
+def generate_answer(query, retrieved_docs,history = None):
     context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+
+        # 构造历史部分
+    history_text = ""
+    if history:
+        # 只取最近几轮，避免 token 过长
+        recent_history = history[-5:]  # 最近5轮（可根据需要调整）
+        history_text = "历史对话：\n"
+        for msg in recent_history:
+            role = msg["role"]
+            content = msg["content"]
+            if role == "user":
+                history_text += f"用户：{content}\n"
+            elif role == "assistant":
+                history_text += f"助手：{content}\n"
+        history_text += "\n"
+
     prompt = f"""请根据以下文档内容回答用户的问题。如果文档中没有相关信息，请如实说明。
 
 文档内容：

@@ -57,7 +57,7 @@ if prompt:
     # 调用问答函数
     with st.chat_message("assistant"):
         with st.spinner("正在检索并生成答案..."):
-            answer, top_docs = answer_question(prompt, use_multi_source=True, lambda_mult=0.8)
+            answer, top_docs = answer_question(prompt, use_multi_source=True, lambda_mult=0.8,history=st.session_state.messages)
             st.markdown(answer)
 
             # 显示来源文档块（可折叠）
