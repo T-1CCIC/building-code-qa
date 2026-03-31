@@ -23,6 +23,8 @@ vectorstore, reranker, client = _load_resources()  # 缓存后的全局变量
 
 # 扩展查询
 def expand_query(query):
+    if len(query) > 20:
+        return query
     prompt = f"请将以下问题改写成一段规范文档中可能会出现的详细描述，用于检索：\n{query}"
     try:
         response = client.chat.completions.create(
@@ -39,7 +41,7 @@ def expand_query(query):
 
 #     
 def generate_answer(query, retrieved_docs,history = None):
-    context = "\n\n".join([doc.page_content for doc in retrieved_docs])
+    context = "\n\n".join([doc.page_content[:300] for doc in retrieved_docs])
 
         # 构造历史部分
     history_text = ""
@@ -81,8 +83,8 @@ def answer_question(query, use_multi_source=False, lambda_mult=0.8,history = Non
     
     all_docs = []
     for q in queries:
-        # 分别用相似度检索，k=15 可调整
-        docs = vectorstore.similarity_search(q, k=15)
+        # 分别用相似度检索，k=10 可调整
+        docs = vectorstore.similarity_search(q, k=10)
         all_docs.extend(docs)
     
     # 按文档内容去重（保留第一个出现的）
