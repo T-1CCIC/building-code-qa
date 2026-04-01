@@ -67,7 +67,7 @@ def generate_answer(query, retrieved_docs,history = None):
 回答："""
     try:
         response = client.chat.completions.create(
-            model="glm-4.6",
+            model="glm-4-flashx",
             messages=[{"role": "user", "content": prompt}],
             timeout=30
         )
