@@ -28,7 +28,7 @@ def expand_query(query):
     prompt = f"请将以下问题改写成一段规范文档中可能会出现的详细描述，用于检索：\n{query}"
     try:
         response = client.chat.completions.create(
-            model="glm-4",
+            model="glm-4-FlashX",
             messages=[{"role": "user", "content": prompt}],
             timeout=30
         )
@@ -47,7 +47,7 @@ def generate_answer(query, retrieved_docs,history = None):
     history_text = ""
     if history:
         # 只取最近几轮，避免 token 过长
-        recent_history = history[-5:]  # 最近5轮（可根据需要调整）
+        recent_history = history[-3:]  # 最近3轮（可根据需要调整）
         history_text = "历史对话：\n"
         for msg in recent_history:
             role = msg["role"]
@@ -67,7 +67,7 @@ def generate_answer(query, retrieved_docs,history = None):
 回答："""
     try:
         response = client.chat.completions.create(
-            model="glm-4",
+            model="glm-4.6",
             messages=[{"role": "user", "content": prompt}],
             timeout=30
         )
@@ -83,8 +83,8 @@ def answer_question(query, use_multi_source=False, lambda_mult=0.8,history = Non
     
     all_docs = []
     for q in queries:
-        # 分别用相似度检索，k=10 可调整
-        docs = vectorstore.similarity_search(q, k=10)
+        # 分别用相似度检索，k=8 可调整
+        docs = vectorstore.similarity_search(q, k=8)
         all_docs.extend(docs)
     
     # 按文档内容去重（保留第一个出现的）
@@ -93,10 +93,10 @@ def answer_question(query, use_multi_source=False, lambda_mult=0.8,history = Non
 
     # MMR检索
     # candidate_docs = vectorstore.max_marginal_relevance_search(
-    #     query, k=30, fetch_k=100, lambda_mult=lambda_mult
+    #     query, k=10, fetch_k=50, lambda_mult=lambda_mult
     # )   
     # 普通检索                                                         
-    # candidate_docs = vectorstore.similarity_search(query,k=30)   
+    # candidate_docs = vectorstore.similarity_search(query,k=10)   
     
     pairs = [[query, doc.page_content] for doc in candidate_docs]
     scores = reranker.predict(pairs)
