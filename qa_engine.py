@@ -30,6 +30,8 @@ def expand_query(query):
         response = client.chat.completions.create(
             model="glm-4.7-flash",
             messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            top_p=0.9,
             timeout=30
         )
         expanded = response.choices[0].message.content
@@ -69,6 +71,8 @@ def generate_answer(query, retrieved_docs,history = None):
         response = client.chat.completions.create(
             model="glm-4.7-flash",
             messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            top_p=0.9,
             timeout=30
         )
         return response.choices[0].message.content
