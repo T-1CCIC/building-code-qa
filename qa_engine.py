@@ -28,7 +28,7 @@ def expand_query(query):
     prompt = f"请将以下问题改写成一段规范文档中可能会出现的详细描述，用于检索：\n{query}"
     try:
         response = client.chat.completions.create(
-            model="glm-4-FlashX",
+            model="glm-4-flashx",
             messages=[{"role": "user", "content": prompt}],
             timeout=30
         )
