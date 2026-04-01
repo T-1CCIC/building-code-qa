@@ -28,10 +28,8 @@ def expand_query(query):
     prompt = f"请将以下问题改写成一段规范文档中可能会出现的详细描述，用于检索：\n{query}"
     try:
         response = client.chat.completions.create(
-            model="glm-4.7-flash",
+            model="glm-4",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
-            top_p=0.9,
             timeout=30
         )
         expanded = response.choices[0].message.content
@@ -69,10 +67,8 @@ def generate_answer(query, retrieved_docs,history = None):
 回答："""
     try:
         response = client.chat.completions.create(
-            model="glm-4.7-flash",
+            model="glm-4",
             messages=[{"role": "user", "content": prompt}],
-            temperature=0.7,
-            top_p=0.9,
             timeout=30
         )
         return response.choices[0].message.content
